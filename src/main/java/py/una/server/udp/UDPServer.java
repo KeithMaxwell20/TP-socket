@@ -5,7 +5,7 @@ import java.net.*;
 
 import py.una.bd.CamaDAO;
 import py.una.entidad.Cama;
-import py.una.entidad.PersonaJSON;
+import py.una.entidad.CamaJSON;
 
 public class UDPServer {
 	
