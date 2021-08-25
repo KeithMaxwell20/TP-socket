@@ -85,8 +85,8 @@ public class UDPServer {
                 		datoEnviar = "Debe elegir una opción válida (1-6)";
                 		paqueteEnviar = new DatagramPacket(datoEnviar.getBytes(), datoEnviar.length(), direccionIP, puerto);
                 		serverSocket.send(paqueteEnviar);
-                		/* El cliente debe manejar la respuesta recibida y actuar en consecuencia
-                		   volviendo a ingresar una opción hasta que sea válida */
+                		//Vuelve a esperar recibir un paquete por parte del cliente
+                		serverSocket.receive(recibirPaquete);
                 	}
                 	
                 }
