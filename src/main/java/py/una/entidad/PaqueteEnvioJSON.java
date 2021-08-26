@@ -33,7 +33,7 @@ public class PaqueteEnvioJSON {
         p.getCama().setHospital(hospital);
         p.getCama().setCama((String)jsonObject.get("cama"));
         p.getCama().setEstado((String)jsonObject.get("estado"));
-        p.setOpcion((Integer)jsonObject.get("opcion"));
+        p.setOpcion(((Long)jsonObject.get("opcion")).intValue());
         
         return p;
 	}

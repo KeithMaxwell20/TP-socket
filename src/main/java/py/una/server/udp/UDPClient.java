@@ -3,9 +3,12 @@ package py.una.server.udp;
 
 import java.io.*;
 import java.net.*;
+import java.text.ParseException;
 
 import py.una.entidad.Cama;
-import py.una.entidad.PersonaJSON;
+import py.una.entidad.CamaJSON;
+import py.una.entidad.PaqueteEnvio;
+import py.una.entidad.PaqueteEnvioJSON;
 
 class UDPClient {
 
@@ -32,24 +35,26 @@ class UDPClient {
 
             byte[] sendData = new byte[1024];
             byte[] receiveData = new byte[1024];
-
-            System.out.print("Ingrese el número de cédula (debe ser numérico): ");
-            String strcedula = inFromUser.readLine();
-            Long cedula = 0L;
-            try {
-            	cedula = Long.parseLong(strcedula);
-            }catch(Exception e1) {
-            	
-            }
             
-            System.out.print("Ingrese el nombre: ");
-            String nombre = inFromUser.readLine();
-            System.out.print("Ingrese el apellido: ");
-            String apellido = inFromUser.readLine();
+            System.out.println("Elija una opción:\n"
+		        		+ "1-Ver el estado actual de todos los hospitales\n"
+		        		+ "2-Crear Cama UTI\n"
+		        		+ "3-Eliminar Cama UTI\n"
+		        		+ "4-Ocupar Cama UTI\n"
+		        		+ "5-Desocupar Cama UTI\n"
+		        		+ "6-Desconectar el servidor\n");
+            int operacion = Integer.parseInt(inFromUser.readLine());
+            System.out.print("Ingrese el hospital: ");
+            String hospital = inFromUser.readLine();
+            System.out.print("Ingrese la cama: ");
+            String cama = inFromUser.readLine();
+            System.out.print("Ingrese el estado: ");
+            String estado = inFromUser.readLine();
             
-            Cama p = new Cama(cedula, nombre, apellido);
+            PaqueteEnvio paqueteEnvio = new PaqueteEnvio(operacion,hospital, cama, estado);
+        
             
-            String datoPaquete = PersonaJSON.objetoString(p); 
+            String datoPaquete = PaqueteEnvioJSON.objetoString(paqueteEnvio); 
             sendData = datoPaquete.getBytes();
 
             System.out.println("Enviar " + datoPaquete + " al servidor. ("+ sendData.length + " bytes)");
@@ -71,17 +76,13 @@ class UDPClient {
                 clientSocket.receive(receivePacket);
 
                 String respuesta = new String(receivePacket.getData());
-                Cama presp = PersonaJSON.stringObjeto(respuesta.trim());
+                //Cama presp = PersonaJSON.stringObjeto(respuesta.trim());
                 
                 InetAddress returnIPAddress = receivePacket.getAddress();
                 int port = receivePacket.getPort();
 
                 System.out.println("Respuesta desde =  " + returnIPAddress + ":" + port);
-                System.out.println("Asignaturas: ");
                 
-                for(String tmp: presp.getAsignaturas()) {
-                	System.out.println(" -> " +tmp);
-                }
                 
 
             } catch (SocketTimeoutException ste) {
