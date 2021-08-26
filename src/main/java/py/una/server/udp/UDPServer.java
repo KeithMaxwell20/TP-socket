@@ -3,9 +3,14 @@ package py.una.server.udp;
 import java.io.*;
 import java.net.*;
 
+import org.json.simple.parser.JSONParser;
+
 import py.una.bd.CamaDAO;
 import py.una.entidad.Cama;
 import py.una.entidad.CamaJSON;
+import py.una.entidad.PaqueteEnvioJSON;
+import py.una.entidad.PaqueteEnvio;
+import org.json.*;
 
 public class UDPServer {
 	
@@ -22,7 +27,7 @@ public class UDPServer {
 			
             //Creamos los buffer de datos a enviar y recibir
             byte[] receiveData = new byte[1024];
-            //byte[] sendData = new byte[1024];
+            byte[] sendData = new byte[1024];
 
             //Contador de cuántos clientes atendió
 			int contClientes=0;
@@ -40,13 +45,22 @@ public class UDPServer {
                 System.out.println("Esperando a algun cliente... " + contClientes);
 
                 // 4) Receive LLAMADA BLOQUEANTE
-                serverSocket.receive(recibirPaquete);
+                serverSocket.receive(recibirPaquete); // Recibimos un paquete de la clase PaqueteEnvio
 				
+                // El paquete ya contiene la opción y la clase cama
 				System.out.println("________________________________________________");
                 System.out.println("Aceptamos un paquete");
+                                
                 
                 InetAddress direccionIP = recibirPaquete.getAddress(); // Obtener IP del cliente
                 int puerto = recibirPaquete.getPort(); // Obtener puerto del cliente
+                // Recibimos la opción y la cama dentro del paquete
+                String datoRecibido = new String(recibirPaquete.getData());
+                datoRecibido = datoRecibido.trim();
+                
+                //Convertir de String a objeto
+                PaqueteEnvio paquete = PaqueteEnvioJSON.stringObjeto(datoRecibido);
+                
                 
                 /* Las opciones disponibles deben imprimirse en el programa cliente
 	        	   porque imprimir desde el servidor provoca problemas
@@ -63,133 +77,100 @@ public class UDPServer {
 	           */
                 
                 
-                int opcion = -1; //Primeramente no se elije ninguna opción y se entra al while
+                // Obtenemos los valores de cama y opción dentro del paquete enviado
+                Cama cama = paquete.getCama();
+                int opcion = paquete.getOpcion();
                 
-                // Cadenas para recibir y enviar datos entre cliente y servidor
-                String datoRecibido;
-                String datoEnviar;
+                String datoEnviar; //Cadena que se envía al cliente para responder  sus peticiones
+                       
+                DatagramPacket paqueteEnviar; // Paquete para enviar al cliente
                 
-                DatagramPacket paqueteEnviar;
+                //Clase JSONParser para convertir cadena a formato JSON
+                JSONParser parser = new JSONParser();
                 
-                // Mientras no se elija una opción válida (1-6)
-                while (opcion<=0 || opcion >= 7)
-                {
-                	// Tenemos la opción elegida en formato cadena, debemos convertir a entero
-                    datoRecibido = new String(recibirPaquete.getData());
-                    datoRecibido = datoRecibido.trim();
-                	opcion = Integer.parseInt(datoRecibido);
-                	
-                	// Si la opción no se encuentra entre las válidas, se manda un mensaje al cliente
-                	if (opcion<=0 || opcion >=7)
-                	{
-                		datoEnviar = "Debe elegir una opción válida (1-6)";
-                		paqueteEnviar = new DatagramPacket(datoEnviar.getBytes(), datoEnviar.length(), direccionIP, puerto);
-                		serverSocket.send(paqueteEnviar);
-                		//Vuelve a esperar recibir un paquete por parte del cliente
-                		serverSocket.receive(recibirPaquete);
-                	}
-                	
-                }
                 
-                // Una vez que el cliente elige una opción válida, manejamos los distintos casos
-                
-                Cama cama;
-                String hospital, numeroCama, estado;
-                // Paquete a recibir en byte[] receiveData y su longitud
-                recibirPaquete = new DatagramPacket(receiveData, receiveData.length);
                 
                 switch(opcion) 
     	        {
     		        case 1: // Ver estado de todos los hospitales    		        	
-    		        	datoEnviar = "Mostrando el estado de todos los hospitales...";
-    		        	paqueteEnviar = new DatagramPacket(datoEnviar.getBytes(), datoEnviar.length(), direccionIP, puerto);
-    		        	serverSocket.send(paqueteEnviar);
     		        	
     		        	// Mostrar el estado de los hospitales usando la base de datos
+    		        	
+    		        	
+    		        	// En caso de error:
+    		        	/*
+    		        	datoEnviar = "Se produjo un error al mostrar el estado de los hospitales";
+    		        	sendData = datoEnviar.getBytes();
+    		        	paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
+    		        	serverSocket.send(paqueteEnviar);
+    		        	*/
+    		        	
     		        	break;
     		        	
     		        case 2: // Crear Cama UTI
-    		        	datoEnviar = "Ingrese los datos de la cama (hospital, cama, estado) a añadir: ";
-    		        	paqueteEnviar = new DatagramPacket(datoEnviar.getBytes(), datoEnviar.length(), direccionIP, puerto);
+    		        	
+    		        	//Tenemos los datos, hay que ingresar a la base de datos
+    		        	
+    		        	//En caso de error:
+    		        	/*
+    		        	datoEnviar = "Se produjo un error al crear una cama UTI";
+    		        	sendData = datoEnviar.getBytes();
+    		        	paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
     		        	serverSocket.send(paqueteEnviar);
-    		        	
-    		        	// Recibimos la cama en formato JSON
-    		        	serverSocket.receive(recibirPaquete);
-    		        	
-    		        	//Convertimos a cadena el paquete recibido
-    		        	datoRecibido = new String(recibirPaquete.getData());
-    		        	datoRecibido = datoRecibido.trim();
-    		        	System.out.println("Dato recibido:" + datoRecibido);
-    		        	
-    		        	//Convertimos a objeto    		        	
-    		        	cama = CamaJSON.stringObjeto(datoRecibido);
-    		        	
-    		        	
-    		        	//Agregamos a la base de datos
+    		        	*/
     		        	
     		        	break;
     		        	
     		        case 3: // Eliminar Cama UTI
-    		        	datoEnviar = "Ingrese los datos de la cama (hospital, cama, estado) a borrar: ";
-    		        	paqueteEnviar = new DatagramPacket(datoEnviar.getBytes(), datoEnviar.length(), direccionIP, puerto);
-    		        	serverSocket.send(paqueteEnviar);
     		        	
-    		        	// Recibimos la cama en formato JSON
-    		        	serverSocket.receive(recibirPaquete);
+    		        	//Tenemos los datos, hay que eliminar de la base de datos
     		        	
-    		        	//Convertimos a cadena el paquete recibido
-    		        	datoRecibido = new String(recibirPaquete.getData());
-    		        	datoRecibido = datoRecibido.trim();
-    		        	System.out.println("Dato recibido:" + datoRecibido);
-    		        	
-    		        	//Convertimos a objeto    		        	
-    		        	cama = CamaJSON.stringObjeto(datoRecibido);
-    		        	
-    		        	//Borramos de la base de datos
+    		        	//En caso de error:
+    		        	/*
+    		        	datoEnviar = "Se produjo un error al eliminar una cama UTI";
+    		        	sendData = datoEnviar.getBytes();
+    		        	paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
+    		        	serverSocket.send(paqueteEnviar); 
+    		        	*/
     		        	break;
     		        	
     		        case 4: // Ocupar Cama UTI
-    		        	datoEnviar = "Ingrese los datos de la cama (hospital, cama, estado) a ocupar: ";
-    		        	paqueteEnviar = new DatagramPacket(datoEnviar.getBytes(), datoEnviar.length(), direccionIP, puerto);
-    		        	serverSocket.send(paqueteEnviar);
-    		        	
-    		        	// Recibimos la cama en formato JSON
-    		        	serverSocket.receive(recibirPaquete);
-    		        	
-    		        	//Convertimos a cadena el paquete recibido
-    		        	datoRecibido = new String(recibirPaquete.getData());
-    		        	datoRecibido = datoRecibido.trim();
-    		        	System.out.println("Dato recibido:" + datoRecibido);
-    		        	
-    		        	//Convertimos a objeto    		        	
-    		        	cama = CamaJSON.stringObjeto(datoRecibido);
     		        	
     		        	// Actualizar en la base de datos
+    		        	
+    		        	//En caso de error:
+    		        	/*
+    		        	datoEnviar = "Se produjo un error al ocupar una cama UTI";
+    		        	sendData = datoEnviar.getBytes();
+    		        	paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
+    		        	serverSocket.send(paqueteEnviar); 
+    		        	*/
+    		        	
     		        	break;
     		        	
     		        case 5: // Desocupar Cama UTI
-    		        	datoEnviar = "Ingrese los datos de la cama (hospital, cama, estado) a desocupar: ";
-    		        	paqueteEnviar = new DatagramPacket(datoEnviar.getBytes(), datoEnviar.length(), direccionIP, puerto);
-    		        	serverSocket.send(paqueteEnviar);
     		        	
-    		        	// Recibimos la cama en formato JSON
-    		        	serverSocket.receive(recibirPaquete);
+    		        	// Actualizar en la base de datos
     		        	
-    		        	//Convertimos a cadena el paquete recibido
-    		        	datoRecibido = new String(recibirPaquete.getData());
-    		        	datoRecibido = datoRecibido.trim();
-    		        	System.out.println("Dato recibido:" + datoRecibido);
+    		        	//En caso de error:
+    		        	/*
+    		        	datoEnviar = "Se produjo un error al ocupar una cama UTI";
+    		        	sendData = datoEnviar.getBytes();
+    		        	paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
+    		        	serverSocket.send(paqueteEnviar); 
+    		        	*/
     		        	
-    		        	//Convertimos a objeto    		        	
-    		        	cama = CamaJSON.stringObjeto(datoRecibido);
-    		        	
-    		        	//Desocupar la cama y actualizar en la base de datos
     		        	break;
     		        	
     		        case 6: // Desconectar el sevidor: un if más abajo realiza esta acción con un break para salir del while(true)
     		        	break;
     		        	
     		        default:
+    		        	// Opción inválida, se notifica al cliente
+    		        	datoEnviar = "Se eligió una opción inválida";
+    		        	sendData = datoEnviar.getBytes();
+    		        	paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
+    		        	serverSocket.send(paqueteEnviar); 
     		        	break;
     	        
     	        }
@@ -197,8 +178,9 @@ public class UDPServer {
     	        if (opcion == 6)
     	        {
     	        	datoEnviar = "Se desconecta el servidor";
-    	        	paqueteEnviar = new DatagramPacket(datoEnviar.getBytes(), datoEnviar.length(), direccionIP, puerto);
-    	        	serverSocket.send(paqueteEnviar);
+		        	sendData = datoEnviar.getBytes();
+		        	paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
+		        	serverSocket.send(paqueteEnviar);
     	        	
     	        	break; // Salimos del while(true) y terminamos el programa
     	        }
@@ -209,7 +191,6 @@ public class UDPServer {
         	ex.printStackTrace();
             System.exit(1);
         }
-        //serverSocket.close();
         
     }
     
