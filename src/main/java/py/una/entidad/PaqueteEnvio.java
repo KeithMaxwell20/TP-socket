@@ -9,6 +9,7 @@ public class PaqueteEnvio {
 	
 	PaqueteEnvio()
 	{
+		this.cama = new Cama();
 		this.opcion = 0;
 		this.cama.setCama("");
 		this.cama.setEstado("");
@@ -16,9 +17,10 @@ public class PaqueteEnvio {
 	}
 	
 	// Para las opciones que requieran una cama
-	PaqueteEnvio (int opc, String hosp, String cam, String estado)
+	public PaqueteEnvio (int opc, String hosp, String cam, String estado)
 	{
 		this.opcion = opc;
+		this.cama = new Cama();
 		this.cama.setCama(cam);
 		this.cama.setEstado(estado);
 		this.cama.setHospital(hosp);
