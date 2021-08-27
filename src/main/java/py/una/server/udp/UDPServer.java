@@ -87,41 +87,36 @@ public class UDPServer {
 
 				switch (opcion) {
 					case 1: // Ver estado de todos los hospitales
-
-						// Mostrar el estado de los hospitales usando la base de datos
-
-						// En caso de error:
-						/*
-						 * datoEnviar = "Se produjo un error al mostrar el estado de los hospitales";
-						 * sendData = datoEnviar.getBytes(); paqueteEnviar = new
-						 * DatagramPacket(sendData, sendData.length, direccionIP, puerto);
-						 * serverSocket.send(paqueteEnviar);
-						 */
 						try {
 							List<Cama> ListaCamas = camaDAO.seleccionar();
 							for (Cama cama2 : ListaCamas) {
 								System.out.println("Cama2 "+cama2.getHospital());
 							}
-						} catch (Exception e) {
-							// TODO: handle exception
+							
+						} catch (Exception e) { // Se notifica el error al cliente
+							 datoEnviar = "Se produjo un error al mostrar el estado de los hospitales";
+							 sendData = datoEnviar.getBytes();
+							 paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
+							 serverSocket.send(paqueteEnviar);
 						}
 
 						break;
 
 					case 2: // Crear Cama UTI
-
-						// Tenemos los datos, hay que ingresar a la base de datos
-
-						// En caso de error:
-						/*
-						 * datoEnviar = "Se produjo un error al crear una cama UTI"; sendData =
-						 * datoEnviar.getBytes(); paqueteEnviar = new DatagramPacket(sendData,
-						 * sendData.length, direccionIP, puerto); serverSocket.send(paqueteEnviar);
-						 */
 						try {
 							camaDAO.insertar(cama);
+							
+							// Notificar al cliente la inserción exitosa
+							datoEnviar = "Se insertó la cama exitosamente";
+							sendData = datoEnviar.getBytes();
+							paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
+							serverSocket.send(paqueteEnviar);
 						} catch (Exception e) {
-							//TODO: handle exception
+							// Notificar al cliente el error en la inserción
+							 datoEnviar = "Se produjo un error al crear una cama UTI";
+							 sendData = datoEnviar.getBytes();
+							 paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
+							 serverSocket.send(paqueteEnviar);
 						}
 						break;
 
@@ -139,46 +134,56 @@ public class UDPServer {
 						try {
 							//Borramos de la base de datos
 							camaDAO.borrar(cama.getHospital(), cama.getCama());
+							
+							// Notificamos la eliminación exitosa al cliente
+							datoEnviar = "Se produjo un error al eliminar una cama UTI";
+							sendData = datoEnviar.getBytes();
+							paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
+							serverSocket.send(paqueteEnviar);
+							
 						} catch (Exception e) {
-							//TODO: handle exception
+							//Notificamos al cliente que ocurrió un error
+							datoEnviar = "Se produjo un error al eliminar una cama UTI";
+							sendData = datoEnviar.getBytes();
+							paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
+							serverSocket.send(paqueteEnviar);
 						}
 
 						break;
 
 					case 4: // Ocupar Cama UTI
-
-						// Actualizar en la base de datos
-
-						// En caso de error:
-						/*
-						 * datoEnviar = "Se produjo un error al ocupar una cama UTI"; sendData =
-						 * datoEnviar.getBytes(); paqueteEnviar = new DatagramPacket(sendData,
-						 * sendData.length, direccionIP, puerto); serverSocket.send(paqueteEnviar);
-						 */
-
-
 						try {
 							camaDAO.actualizarEstado(cama);
+							// Notificar éxito al cliente
+							datoEnviar = "Se actualizó exitosamente la cama UTI";
+							sendData = datoEnviar.getBytes();
+							paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
+							serverSocket.send(paqueteEnviar);
 						} catch (Exception e) {
-							//TODO: handle exception
+							// Notificar error al cliente
+							datoEnviar = "No se pudo actualizar exitosamente la cama UTI";
+							sendData = datoEnviar.getBytes();
+							paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
+							serverSocket.send(paqueteEnviar);
 						}
     		        	
 						break;
 
 					case 5: // Desocupar Cama UTI
-
-						// Actualizar en la base de datos
-
-						// En caso de error:
-						/*
-						 * datoEnviar = "Se produjo un error al ocupar una cama UTI"; sendData =
-						 * datoEnviar.getBytes(); paqueteEnviar = new DatagramPacket(sendData,
-						 * sendData.length, direccionIP, puerto); serverSocket.send(paqueteEnviar);
-						 */
 						try {
 							camaDAO.actualizarEstado(cama);
+							// Notificar éxito al cliente
+							datoEnviar = "Se actualizó exitosamente la cama UTI";
+							sendData = datoEnviar.getBytes();
+							paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
+							serverSocket.send(paqueteEnviar);
+							
 						} catch (Exception e) {
-							//TODO: handle exception
+							// Notificar error al cliente
+							datoEnviar = "No se pudo actualizar exitosamente la cama UTI";
+							sendData = datoEnviar.getBytes();
+							paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
+							serverSocket.send(paqueteEnviar);
 						}
 						break;
 
@@ -197,18 +202,11 @@ public class UDPServer {
 
 				}
 
-				if (opcion == 6) {
-					datoEnviar = "Se desconecta el servidor";
-					sendData = datoEnviar.getBytes();
-					paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
-					serverSocket.send(paqueteEnviar);
-
-					break; // Salimos del while(true) y terminamos el programa
-				}
-
+					
 			}
 
-		} catch (Exception ex) {
+
+		  } catch (Exception ex) {
 			ex.printStackTrace();
 			System.exit(1);
 		}
