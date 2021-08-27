@@ -16,6 +16,8 @@ public class IniciodeSesion extends javax.swing.JFrame {
      */
     public IniciodeSesion() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setTitle("Iniciar Sesión");
     }
 
     /**
@@ -28,8 +30,7 @@ public class IniciodeSesion extends javax.swing.JFrame {
     private void initComponents() {
 
         txtcama = new javax.swing.JTextField();
-        cmdagregar = new javax.swing.JButton();
-        cmdagregar1 = new javax.swing.JButton();
+        btnIngresar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
@@ -41,14 +42,12 @@ public class IniciodeSesion extends javax.swing.JFrame {
             }
         });
 
-        cmdagregar.setText("Ingresar");
-        cmdagregar.addActionListener(new java.awt.event.ActionListener() {
+        btnIngresar.setText("Ingresar");
+        btnIngresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdagregarActionPerformed(evt);
+                btnIngresarActionPerformed(evt);
             }
         });
-
-        cmdagregar1.setText("Salir");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Ingrese el Hospital");
@@ -63,35 +62,31 @@ public class IniciodeSesion extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addComponent(jLabel1))
+                        .addGap(231, 231, 231)
+                        .addComponent(btnIngresar))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(160, 160, 160)
+                        .addGap(37, 37, 37)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel3)
-                                .addGap(55, 55, 55)
-                                .addComponent(txtcama, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(cmdagregar)
-                                .addGap(137, 137, 137)
-                                .addComponent(cmdagregar1)))))
-                .addContainerGap(214, Short.MAX_VALUE))
+                                .addGap(11, 11, 11)))
+                        .addGap(18, 18, 18)
+                        .addComponent(txtcama, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(160, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtcama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(53, 53, 53)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmdagregar)
-                    .addComponent(cmdagregar1))
-                .addGap(91, 91, 91))
+                .addGap(52, 52, 52)
+                .addComponent(btnIngresar)
+                .addGap(35, 35, 35))
         );
 
         pack();
@@ -106,9 +101,11 @@ public class IniciodeSesion extends javax.swing.JFrame {
         }           // TODO add your handling code here:
     }//GEN-LAST:event_txtcamaKeyTyped
 
-    private void cmdagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdagregarActionPerformed
+    private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cmdagregarActionPerformed
+        HospitalMenu.Iniciar();
+        this.dispose();
+    }//GEN-LAST:event_btnIngresarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -146,8 +143,7 @@ public class IniciodeSesion extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cmdagregar;
-    private javax.swing.JButton cmdagregar1;
+    private javax.swing.JButton btnIngresar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField txtcama;

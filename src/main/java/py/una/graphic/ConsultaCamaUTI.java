@@ -9,12 +9,12 @@ package py.una.graphic;
  *
  * @author Victor-Ayala
  */
-public class Consulta extends javax.swing.JPanel {
+public class ConsultaCamaUTI extends javax.swing.JPanel {
 
     /**
      * Creates new form Consulta
      */
-    public Consulta() {
+    public ConsultaCamaUTI() {
         initComponents();
     }
 

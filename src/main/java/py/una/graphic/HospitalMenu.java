@@ -16,6 +16,11 @@ public class HospitalMenu extends javax.swing.JFrame {
      */
     public HospitalMenu() {
         initComponents();
+        this.setTitle("UDP");
+        this.panelCrear = new CrearCamaUTI();
+        this.panelConsulta = new ConsultaCamaUTI();
+        this.panelEliminar = new EliminarCamaUTI();
+        this.panelModificar = new ModificarCamaUTI();
     }
 
     /**
@@ -67,6 +72,11 @@ public class HospitalMenu extends javax.swing.JFrame {
 
         btnSalir.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelBtnLayout = new javax.swing.GroupLayout(panelBtn);
         panelBtn.setLayout(panelBtnLayout);
@@ -91,15 +101,35 @@ public class HospitalMenu extends javax.swing.JFrame {
 
         btnConsulta.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnConsulta.setText("Consulta");
+        btnConsulta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultaActionPerformed(evt);
+            }
+        });
 
         btnCrear.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnCrear.setText("Crear Cama UTI");
+        btnCrear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnEliminar.setText("Eliminar Cama UTI");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         btnModificar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnModificar.setText("Modificar Estado Cama UTI");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelMenuLayout = new javax.swing.GroupLayout(panelMenu);
         panelMenu.setLayout(panelMenuLayout);
@@ -135,9 +165,60 @@ public class HospitalMenu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        // TODO add your handling code here:
+        IniciodeSesion.main(null);
+        this.dispose();
+    }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void btnConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaActionPerformed
+        // TODO add your handling code here:
+        quitarPaneles();
+        panelConsulta.setVisible(true);
+        panelContenedor.add(panelConsulta);
+    }//GEN-LAST:event_btnConsultaActionPerformed
+
+    private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
+        // TODO add your handling code here:
+        quitarPaneles();
+        panelCrear.setVisible(true);
+        panelContenedor.add(panelCrear);
+    }//GEN-LAST:event_btnCrearActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        quitarPaneles();
+        panelEliminar.setVisible(true);
+        panelContenedor.add(panelEliminar);
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        // TODO add your handling code here:
+        quitarPaneles();
+        panelModificar.setVisible(true);
+        panelContenedor.add(panelModificar);
+    }//GEN-LAST:event_btnModificarActionPerformed
+    public static void Iniciar ( ) {
+        java.awt.EventQueue.invokeLater(() -> {
+            new HospitalMenu().setVisible(true);
+        });
+    }
+    
+    public void quitarPaneles(){
+      this.panelCrear.setVisible(false);
+      this.panelConsulta.setVisible(false);
+      this.panelEliminar.setVisible(false);
+      this.panelModificar.setVisible(false);
+    }
     /**
      * @param args the command line arguments
      */
+    
+    //Paneles a usar
+    private final CrearCamaUTI panelCrear;
+    private final ConsultaCamaUTI panelConsulta;
+    private final EliminarCamaUTI panelEliminar;
+    private final ModificarCamaUTI panelModificar;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConsulta;
