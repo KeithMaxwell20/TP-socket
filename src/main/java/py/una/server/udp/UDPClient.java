@@ -5,6 +5,9 @@ import java.io.*;
 import java.net.*;
 import java.text.ParseException;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 import py.una.entidad.Cama;
 import py.una.entidad.CamaJSON;
 import py.una.entidad.PaqueteEnvio;
@@ -82,6 +85,13 @@ class UDPClient {
                 int port = receivePacket.getPort();
 
                 System.out.println("Respuesta desde =  " + returnIPAddress + ":" + port);
+                System.out.println("Respuesta = " + respuesta);
+
+                JSONParser parser = new JSONParser();
+                Object obj = parser.parse(respuesta.trim());
+                JSONObject jsonObject = (JSONObject) obj;
+                String hospitales = (String)jsonObject.get("cuerpo");
+                System.out.println("Hospitales = " + hospitales);
                 
                 
 

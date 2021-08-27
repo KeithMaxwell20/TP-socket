@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.util.List;
 
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import py.una.bd.CamaDAO;
@@ -74,7 +75,7 @@ public class UDPServer {
 				Cama cama = paquete.getCama();
 				int opcion = paquete.getOpcion();
 
-				System.out.println("cama.toString()"+cama.toString() + opcion + " *********************************");
+				System.out.println("cama.toString()" + cama.toString() + opcion + " *********************************");
 				String datoEnviar; // Cadena que se envía al cliente para responder sus peticiones
 
 				DatagramPacket paqueteEnviar; // Paquete para enviar al cliente
@@ -84,20 +85,37 @@ public class UDPServer {
 
 				// Creamos la coneccion a la base de datos
 				CamaDAO camaDAO = new CamaDAO();
+				// Creamos el json para la respuesta al cliente
+				JSONObject respuesta = new JSONObject();
 
 				switch (opcion) {
 					case 1: // Ver estado de todos los hospitales
 						try {
 							List<Cama> ListaCamas = camaDAO.seleccionar();
 							for (Cama cama2 : ListaCamas) {
-								System.out.println("Cama2 "+cama2.getHospital());
+								System.out.println("Cama2 " + cama2.getHospital());
 							}
-							
+							// formamos el json de respuesta
+							respuesta.put("estado", 0);
+							respuesta.put("mensaje", "ok");
+							respuesta.put("tipo_operacion", 1);
+							respuesta.put("cuerpo", listamosCamas(ListaCamas.toArray()));
+
+							sendData = (respuesta.toJSONString()).getBytes();
+							paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
+							serverSocket.send(paqueteEnviar);
+
 						} catch (Exception e) { // Se notifica el error al cliente
-							 datoEnviar = "Se produjo un error al mostrar el estado de los hospitales";
-							 sendData = datoEnviar.getBytes();
-							 paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
-							 serverSocket.send(paqueteEnviar);
+							datoEnviar = "Se produjo un error al mostrar el estado de los hospitales";
+							// formamos el json de respuesta
+							respuesta.put("estado",-1);
+							respuesta.put("mensaje", e.getMessage());
+							respuesta.put("tipo_operacion", 1);
+							respuesta.put("cuerpo", datoEnviar);
+
+							sendData = (respuesta.toJSONString()).getBytes();
+							paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
+							serverSocket.send(paqueteEnviar);
 						}
 
 						break;
@@ -105,37 +123,62 @@ public class UDPServer {
 					case 2: // Crear Cama UTI
 						try {
 							camaDAO.insertar(cama);
-							
+
 							// Notificar al cliente la inserción exitosa
 							datoEnviar = "Se insertó la cama exitosamente";
-							sendData = datoEnviar.getBytes();
+
+							// formamos el json de respuesta
+							respuesta.put("estado", 0);
+							respuesta.put("mensaje", "ok");
+							respuesta.put("tipo_operacion", 2);
+							respuesta.put("cuerpo", datoEnviar);
+
+							sendData = (respuesta.toJSONString()).getBytes();
 							paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
 							serverSocket.send(paqueteEnviar);
 						} catch (Exception e) {
 							// Notificar al cliente el error en la inserción
-							 datoEnviar = "Se produjo un error al crear una cama UTI";
-							 sendData = datoEnviar.getBytes();
-							 paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
-							 serverSocket.send(paqueteEnviar);
+							datoEnviar = "Se produjo un error al crear una cama UTI";
+							// formamos el json de respuesta
+							respuesta.put("estado", -1);
+							respuesta.put("mensaje", e.getMessage());
+							respuesta.put("tipo_operacion", 2);
+							respuesta.put("cuerpo", datoEnviar);
+
+							sendData = (respuesta.toJSONString()).getBytes();
+							paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
+							serverSocket.send(paqueteEnviar);
 						}
 						break;
 
 					case 3: // Eliminar Cama UTI
 
 						try {
-							//Borramos de la base de datos
+							// Borramos de la base de datos
 							camaDAO.borrar(cama.getHospital(), cama.getCama());
-							
+
 							// Notificamos la eliminación exitosa al cliente
-							datoEnviar = "Se produjo un error al eliminar una cama UTI";
-							sendData = datoEnviar.getBytes();
+							datoEnviar = "Se eliminó la cama UTI";
+							// formamos el json de respuesta
+							respuesta.put("estado", 0);
+							respuesta.put("mensaje", "ok");
+							respuesta.put("tipo_operacion", 3);
+							respuesta.put("cuerpo", datoEnviar);
+
+							sendData = (respuesta.toJSONString()).getBytes();
 							paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
 							serverSocket.send(paqueteEnviar);
-							
+
 						} catch (Exception e) {
-							//Notificamos al cliente que ocurrió un error
+							// Notificamos al cliente que ocurrió un error
 							datoEnviar = "Se produjo un error al eliminar una cama UTI";
-							sendData = datoEnviar.getBytes();
+							// formamos el json de respuesta
+							respuesta.put("estado", -1);
+							respuesta.put("mensaje", e.getMessage());
+							respuesta.put("tipo_operacion", 3);
+							respuesta.put("cuerpo", datoEnviar);
+
+							sendData = (respuesta.toJSONString()).getBytes();
 							paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
 							serverSocket.send(paqueteEnviar);
 						}
@@ -147,17 +190,29 @@ public class UDPServer {
 							camaDAO.actualizarEstado(cama);
 							// Notificar éxito al cliente
 							datoEnviar = "Se actualizó exitosamente la cama UTI";
-							sendData = datoEnviar.getBytes();
+							// formamos el json de respuesta
+							respuesta.put("estado", 0);
+							respuesta.put("mensaje", "ok");
+							respuesta.put("tipo_operacion", 4);
+							respuesta.put("cuerpo", datoEnviar);
+
+							sendData = (respuesta.toJSONString()).getBytes();
 							paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
 							serverSocket.send(paqueteEnviar);
 						} catch (Exception e) {
 							// Notificar error al cliente
 							datoEnviar = "No se pudo actualizar exitosamente la cama UTI";
-							sendData = datoEnviar.getBytes();
+							// formamos el json de respuesta
+							respuesta.put("estado", -1);
+							respuesta.put("mensaje", e.getMessage());
+							respuesta.put("tipo_operacion", 4);
+							respuesta.put("cuerpo", datoEnviar);
+
+							sendData = (respuesta.toJSONString()).getBytes();
 							paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
 							serverSocket.send(paqueteEnviar);
 						}
-    		        	
+
 						break;
 
 					case 5: // Desocupar Cama UTI
@@ -165,14 +220,26 @@ public class UDPServer {
 							camaDAO.actualizarEstado(cama);
 							// Notificar éxito al cliente
 							datoEnviar = "Se actualizó exitosamente la cama UTI";
-							sendData = datoEnviar.getBytes();
+							// formamos el json de respuesta
+							respuesta.put("estado", 0);
+							respuesta.put("mensaje", "ok");
+							respuesta.put("tipo_operacion", 5);
+							respuesta.put("cuerpo", datoEnviar);
+
+							sendData = (respuesta.toJSONString()).getBytes();
 							paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
 							serverSocket.send(paqueteEnviar);
-							
+
 						} catch (Exception e) {
 							// Notificar error al cliente
 							datoEnviar = "No se pudo actualizar exitosamente la cama UTI";
-							sendData = datoEnviar.getBytes();
+							// formamos el json de respuesta
+							respuesta.put("estado", -1);
+							respuesta.put("mensaje", e.getMessage());
+							respuesta.put("tipo_operacion", 5);
+							respuesta.put("cuerpo", datoEnviar);
+
+							sendData = (respuesta.toJSONString()).getBytes();
 							paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
 							serverSocket.send(paqueteEnviar);
 						}
@@ -180,28 +247,52 @@ public class UDPServer {
 
 					case 6: // Desconectar el sevidor: un if más abajo realiza esta acción con un break para
 							// salir del while(true)
+							datoEnviar = "Se cerró exitosamente el Servidor";
+							// formamos el json de respuesta
+							respuesta.put("estado", 0);
+							respuesta.put("mensaje","ok");
+							respuesta.put("tipo_operacion", 6);
+							respuesta.put("cuerpo", datoEnviar);
+
+							sendData = (respuesta.toJSONString()).getBytes();
+							paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
+							serverSocket.send(paqueteEnviar);
 							System.exit(0);
 						break;
 
 					default:
 						// Opción inválida, se notifica al cliente
 						datoEnviar = "Se eligió una opción inválida";
-						sendData = datoEnviar.getBytes();
+						// formamos el jason de respuesta
+						respuesta.put("estado", -1);
+						respuesta.put("mensaje", "Error");
+						respuesta.put("tipo_operacion", -1);
+						respuesta.put("cuerpo", datoEnviar);
+
+						sendData = (respuesta.toJSONString()).getBytes();
 						paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
 						serverSocket.send(paqueteEnviar);
 						break;
 
 				}
 
-					
 			}
 
-
-		  } catch (Exception ex) {
+		} catch (Exception ex) {
 			ex.printStackTrace();
 			System.exit(1);
 		}
 
+	}
+	static String listamosCamas(Object[] camas){
+		String respuesta="";
+		for (Object obj : camas) {
+			
+			Cama cama = (Cama)obj;
+			respuesta+=","+"Hospital:"+cama.getHospital()+"+"+"Cama:"+cama.getCama()+"+"+"Estado:"+cama.getEstado();
+		}
+
+		return respuesta;
 	}
 
 }
