@@ -31,10 +31,10 @@ public class EliminarCamaUTI extends javax.swing.JPanel {
         labelTitulo = new javax.swing.JLabel();
         panelEliminar = new javax.swing.JPanel();
         panelBtn = new javax.swing.JPanel();
-        btnEliminar = new javax.swing.JButton();
         panelForm = new javax.swing.JPanel();
         label = new javax.swing.JLabel();
         txtCamaEliminar = new javax.swing.JTextField();
+        btnEliminar = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -45,35 +45,41 @@ public class EliminarCamaUTI extends javax.swing.JPanel {
         add(panelTitulo, java.awt.BorderLayout.PAGE_START);
 
         panelEliminar.setLayout(new java.awt.BorderLayout());
-
-        btnEliminar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnEliminar.setText("Eliminar");
-        panelBtn.add(btnEliminar);
-
         panelEliminar.add(panelBtn, java.awt.BorderLayout.PAGE_END);
 
         label.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         label.setText("Nº de cama:");
+
+        txtCamaEliminar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        btnEliminar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnEliminar.setText("Eliminar");
 
         javax.swing.GroupLayout panelFormLayout = new javax.swing.GroupLayout(panelForm);
         panelForm.setLayout(panelFormLayout);
         panelFormLayout.setHorizontalGroup(
             panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelFormLayout.createSequentialGroup()
-                .addGap(93, 93, 93)
+                .addGap(134, 134, 134)
                 .addComponent(label)
                 .addGap(56, 56, 56)
-                .addComponent(txtCamaEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(171, Short.MAX_VALUE))
+                .addComponent(txtCamaEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(90, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFormLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnEliminar)
+                .addGap(185, 185, 185))
         );
         panelFormLayout.setVerticalGroup(
             panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelFormLayout.createSequentialGroup()
-                .addGap(97, 97, 97)
+                .addGap(51, 51, 51)
                 .addGroup(panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(label)
                     .addComponent(txtCamaEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
+                .addComponent(btnEliminar)
+                .addGap(20, 20, 20))
         );
 
         panelEliminar.add(panelForm, java.awt.BorderLayout.CENTER);

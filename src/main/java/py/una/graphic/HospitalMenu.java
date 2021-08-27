@@ -16,11 +16,13 @@ public class HospitalMenu extends javax.swing.JFrame {
      */
     public HospitalMenu() {
         initComponents();
+        this.setLocationRelativeTo(null);
         this.setTitle("UDP");
         this.panelCrear = new CrearCamaUTI();
         this.panelConsulta = new ConsultaCamaUTI();
         this.panelEliminar = new EliminarCamaUTI();
         this.panelModificar = new ModificarCamaUTI();
+        this.panelContenedor.add(panelConsulta);
     }
 
     /**
