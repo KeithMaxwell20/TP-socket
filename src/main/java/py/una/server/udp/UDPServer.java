@@ -122,15 +122,6 @@ public class UDPServer {
 
 					case 3: // Eliminar Cama UTI
 
-						// Tenemos los datos, hay que eliminar de la base de datos
-
-						// En caso de error:
-						/*
-						 * datoEnviar = "Se produjo un error al eliminar una cama UTI"; sendData =
-						 * datoEnviar.getBytes(); paqueteEnviar = new DatagramPacket(sendData,
-						 * sendData.length, direccionIP, puerto); serverSocket.send(paqueteEnviar);
-						 */
-
 						try {
 							//Borramos de la base de datos
 							camaDAO.borrar(cama.getHospital(), cama.getCama());
