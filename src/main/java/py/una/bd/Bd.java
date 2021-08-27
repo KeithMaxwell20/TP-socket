@@ -9,7 +9,7 @@ public class Bd {
 
     private static final String url = "jdbc:postgresql://localhost:5433/TP-Sockets";
     private static final String user = "postgres";
-    private static final String password = "aloha182";
+    private static final String password = "aloha123";
  
     /**
      * @return objeto Connection 
