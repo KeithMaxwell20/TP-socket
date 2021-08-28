@@ -7,9 +7,9 @@ import java.sql.SQLException;
 
 public class Bd {
 
-    private static final String url = "jdbc:postgresql://localhost:5433/TP-Sockets";
+    private static final String url = "jdbc:postgresql://localhost:5432/TP-Sockets";
     private static final String user = "postgres";
-    private static final String password = "aloha182";
+    private static final String password = "romina";
  
     /**
      * @return objeto Connection 
