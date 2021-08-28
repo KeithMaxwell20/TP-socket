@@ -3,6 +3,7 @@ package py.una.server.udp;
 import java.io.*;
 import java.net.*;
 import java.util.List;
+import java.util.*;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -12,13 +13,23 @@ import py.una.entidad.Cama;
 import py.una.entidad.CamaJSON;
 import py.una.entidad.PaqueteEnvioJSON;
 import py.una.entidad.PaqueteEnvio;
+import py.una.entidad.Log;
 import org.json.*;
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
 
 public class UDPServer {
-
+	
+	public static final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
+	public static String now() {
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
+		return sdf.format(cal.getTime());
+		}
+	
 	public static void main(String[] a) {
 		// Variables de puerto y objeto de Base de Datos
-		int puertoServidor = 9876;
+		int puertoServidor = 9878;
 		CamaDAO camaBD = new CamaDAO();
 
 		try {
@@ -32,7 +43,12 @@ public class UDPServer {
 
 			// Contador de cuántos clientes atendió
 			int contClientes = 0;
-
+			
+			// Para guardar el log
+			int cantidadLog = 0;
+			// Lista donde se guarda el log
+			LinkedList<Log> listaLog = new LinkedList<Log>();
+			
 			// El servidor siempre espera por peticiones
 			while (true) {
 
@@ -52,6 +68,7 @@ public class UDPServer {
 
 				InetAddress direccionIP = recibirPaquete.getAddress(); // Obtener IP del cliente
 				int puerto = recibirPaquete.getPort(); // Obtener puerto del cliente
+				
 				// Recibimos la opción y la cama dentro del paquete
 				String datoRecibido = new String(recibirPaquete.getData());
 				datoRecibido = datoRecibido.trim();
@@ -87,7 +104,24 @@ public class UDPServer {
 				CamaDAO camaDAO = new CamaDAO();
 				// Creamos el json para la respuesta al cliente
 				JSONObject respuesta = new JSONObject();
-
+				
+				
+				Log log;
+				// Crear log si la opción es válida
+				if (opcion>=1 && opcion <=7)
+				{
+					String fecha = now();
+					String dirDestino = recibirPaquete.getAddress().toString();
+					int puertoOrigen = puerto;
+					String dirOrigen = direccionIP.toString();
+					int puertoDestino = puertoServidor;
+					int tipo = opcion;
+					
+					log = new Log(fecha, dirOrigen, puertoOrigen, dirDestino, puertoDestino, tipo);
+					
+					listaLog.add(log);	
+				}
+				
 				switch (opcion) {
 					case 1: // Ver estado de todos los hospitales
 						try {
@@ -259,7 +293,19 @@ public class UDPServer {
 							serverSocket.send(paqueteEnviar);
 							System.exit(0);
 						break;
-
+					case 7: // Imprimir el log
+						Log log2;
+						for (int i=0; i<listaLog.size();i++)
+						{
+							log2 = listaLog.get(i);
+							System.out.println("Fecha-hora: "+ log2.getFecha() + ", origen:" + log2.getIpOrigen() + "" + log2.getDirOrigen() + ", destino:" + log2.getIpDestino() + "" + log2.getDirDestino() + ", tipo_operacion: " + log2.getOperacion());
+						}
+						datoEnviar = "Se muestra el log en el servidor";
+						sendData = datoEnviar.getBytes();
+						paqueteEnviar = new DatagramPacket(sendData, sendData.length, direccionIP, puerto);
+						serverSocket.send(paqueteEnviar);
+						
+						break;
 					default:
 						// Opción inválida, se notifica al cliente
 						datoEnviar = "Se eligió una opción inválida";
@@ -296,3 +342,4 @@ public class UDPServer {
 	}
 
 }
+

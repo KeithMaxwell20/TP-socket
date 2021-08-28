@@ -24,7 +24,7 @@ class UDPClient {
             direccionServidor = a[0];
         }
 
-        int puertoServidor = 9876;
+        int puertoServidor = 9878;
         
         try {
 
@@ -45,7 +45,8 @@ class UDPClient {
 		        		+ "3-Eliminar Cama UTI\n"
 		        		+ "4-Ocupar Cama UTI\n"
 		        		+ "5-Desocupar Cama UTI\n"
-		        		+ "6-Desconectar el servidor\n");
+		        		+ "6-Desconectar el servidor\n"
+		        		+ "7-Revisar log");
             int operacion = Integer.parseInt(inFromUser.readLine());
             System.out.print("Ingrese el hospital: ");
             String hospital = inFromUser.readLine();
@@ -86,7 +87,10 @@ class UDPClient {
 
                 System.out.println("Respuesta desde =  " + returnIPAddress + ":" + port);
                 System.out.println("Respuesta = " + respuesta);
-
+                
+                if (operacion == 7)
+                	System.exit(1);
+                
                 JSONParser parser = new JSONParser();
                 Object obj = parser.parse(respuesta.trim());
                 JSONObject jsonObject = (JSONObject) obj;
