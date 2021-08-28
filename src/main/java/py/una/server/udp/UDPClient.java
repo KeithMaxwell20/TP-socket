@@ -91,6 +91,7 @@ class UDPClient {
                 Object obj = parser.parse(respuesta.trim());
                 JSONObject jsonObject = (JSONObject) obj;
                 String hospitales = (String)jsonObject.get("cuerpo");
+                
                 System.out.println("Hospitales = " + hospitales);
                 
                 
