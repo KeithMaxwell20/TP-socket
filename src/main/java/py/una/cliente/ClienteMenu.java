@@ -54,7 +54,8 @@ public class ClienteMenu {
                         + "4-Ocupar Cama UTI\n"
                         + "5-Desocupar Cama UTI\n"
                         + "6-Desconectar el servidor\n"
-                        + "7-Salir\n");
+                        + "7-Revisar log\n"
+                        + "8-Salir\n");
                 operacion =Integer.parseInt(inFromUser.readLine());
 
                 switch (operacion) {
@@ -88,6 +89,8 @@ public class ClienteMenu {
                         estado = "descocupado";
                         break;
                     case 6:
+                        break;
+                    case 7:
                         break;
                 }
                 cam.setCama(cama);

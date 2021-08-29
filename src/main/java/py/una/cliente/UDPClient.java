@@ -37,7 +37,7 @@ class UDPClient {
 
             Cama cam = cliente.iniciarMenu();
 
-            while (cliente.getOperacion() != 7) {
+            while (cliente.getOperacion() != 8) {
                 byte[] sendData = new byte[1024];
                 byte[] receiveData = new byte[1024];
                 //Prepara paquete para el envío al servidor con la operacion
@@ -69,15 +69,30 @@ class UDPClient {
                     InetAddress returnIPAddress = receivePacket.getAddress();
                     int port = receivePacket.getPort();
 
-                    //System.out.println("Respuesta desde =  " + returnIPAddress + ":" + port);
-                    //System.out.println("Respuesta = " + respuesta);
+                    System.out.println("Respuesta desde =  " + returnIPAddress + ":" + port);
+                    System.out.println("Respuesta = " + respuesta);
 
                     JSONParser parser = new JSONParser();
                     Object obj = parser.parse(respuesta.trim());
                     JSONObject jsonObject = (JSONObject) obj;
-                    String hospitales = (String) jsonObject.get("cuerpo");
+                    String cuerpo = (String) jsonObject.get("cuerpo");
                     //Se recibe datos y mensajes del servidor
-                    System.out.println(hospitales);
+                    if(cliente.getOperacion()==1){
+                        String[] filas = cuerpo.split("\\$");
+                        
+                        for (String fila : filas) {
+                            String[] elementos = fila.split(",");
+                            System.out.println("-------------------------");
+                            for (String string : elementos) {
+                                System.out.println(string);
+                            }
+                            
+                            
+                        }
+                    }else{
+                        System.out.println("Cuerpo: "+ cuerpo);
+                    }
+
                     
                     System.out.println("Press Any Key To Continue...");
                     new java.util.Scanner(System.in).nextLine();

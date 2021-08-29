@@ -113,9 +113,10 @@ public class CamaDAO {
                 // get the ID back
                 System.out.println("Se insertaron con exito "+affectedRows+" campos");
             }
+            
         } catch (SQLException ex) {
             System.out.println("Error en la insercion: " + ex.getMessage());
-            resul=0;
+            resul=-1;
         }
         finally  {
         	try{
@@ -132,7 +133,7 @@ public class CamaDAO {
     }
 	
 
-    public long actualizarEstado(Cama p) throws SQLException {
+    public int actualizarEstado(Cama p) throws SQLException {
 
         String SQL = "UPDATE camas SET estado = ?  WHERE hospital = ? AND cama = ?";
  
@@ -154,9 +155,10 @@ public class CamaDAO {
                  System.out.println("Se actualizaron con exito "+affectedRows+" campos");
                  resul=1;
             }
+            resul=affectedRows;
         } catch (SQLException ex) {
             System.out.println("Error en la actualizacion: " + ex.getMessage());
-            resul=0;
+            resul=-1;
         }
         finally  {
         	try{
@@ -172,7 +174,7 @@ public class CamaDAO {
     public int borrar(String hospital, String cama) throws SQLException {
 
         String SQL = "DELETE FROM camas WHERE hospital = ? AND cama = ?";
- 
+        int resul=0;
    
         Connection conn = null;
         
@@ -189,19 +191,21 @@ public class CamaDAO {
                 
                 System.out.println("Se borraron con exito "+affectedRows+" campos");
             }
+            resul=affectedRows;
+
         } catch (SQLException ex) {
             System.out.println("Error en la eliminación: " + ex.getMessage());
-            
+            resul =-1;
         }
         finally  {
         	try{
         		conn.close();
         	}catch(Exception ef){
         		System.out.println("No se pudo cerrar la conexion a BD: "+ ef.getMessage());
-                        return 0;
+                        resul= -1;
         	}
         }
-        return 1;
+        return resul;
     }
     
 
