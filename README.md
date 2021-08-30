@@ -54,3 +54,5 @@ Hecho esto, podemos ejecutar la aplicación del cliente llamada “UDPClient” 
 * Desconectar el servidor
 * Revisar log
 
+### Documentación TP-Sockets
+https://docs.google.com/document/d/1PNgfD7ImLgAtXumwQ-XTzcml3ikComTWwn59j0DMva4/edit
