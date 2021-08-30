@@ -148,5 +148,4 @@ Desconectarse del servidor: Una vez realizado todas las operaciones que deseemos
 
 
 
-### Documentación TP-Sockets
-https://docs.google.com/document/d/1PNgfD7ImLgAtXumwQ-XTzcml3ikComTWwn59j0DMva4/edit
+
