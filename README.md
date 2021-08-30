@@ -36,7 +36,7 @@ Copiar el repositorio
 ![imagen](https://user-images.githubusercontent.com/88010175/131270398-8bc40fe3-d7e6-4b5f-bb50-410c5d8bd528.png)
 
 Ejecutar el comando
-`` $ git clone https://github.com/KeithMaxwell20/TP-socket.git ``
+    $ git clone https://github.com/jg2kpy/CamasUTI_TCP.git
 
 El servidor se encuentra en src\main\java\py\una\server\udp, si está ejecutando en NetBeans tiene que darle a Run.
 Si se encuentra en VSC tiene que darle a Run Java (aparece con Code Run).
