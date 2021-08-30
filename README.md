@@ -38,7 +38,7 @@ Ejecutar el comando
 `` $ git clone https://github.com/KeithMaxwell20/TP-socket.git ``
 
 El servidor se encuentra en src\main\java\py\una\server\udp, si está ejecutando en NetBeans tiene que darle a Run.
-Si se encuentra en VSC tiene que darle a Run Java (aparece en con Code Run).
+Si se encuentra en VSC tiene que darle a Run Java (aparece con Code Run).
 
 Hecho esto, podemos ejecutar la aplicación del cliente llamada “UDPClient” del proyecto que se encuentra en src\main\java\py\una\cliente, que nos lleva al siguiente menú, nos pide que ingresemos el nombre del hospital para luego desplegar las opciones de ver los estados de la cama, los ABM, desconectar el servidor, etc.
 ![imagen](https://user-images.githubusercontent.com/88010175/131270872-8e418357-0a56-4480-9dd8-c08f04c60915.png)
