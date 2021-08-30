@@ -55,12 +55,19 @@ Hecho esto, podemos ejecutar la aplicación del cliente llamada “UDPClient” 
 El servidor cuenta con la capacidad para manejar una variedad de peticiones que puede solicitar el cliente. Listamos la totalidad de las operaciones que pueden ser realizadas:
 
 1- Ver el estado actual de todos los hospitales: Esta operación lista todos los hospitales almacenados en la base de datos.
-2- Crear Cama UTI: Crea el objeto Cama y lo almacena en la base de datos
+
+2- Crear Cama UTI: Crea el objeto Cama y lo almacena en la base de datos.
+
 3- Eliminar Cama UTI: Crea el objeto Cama y lo borra de la base de datos.
+
 4- Ocupar Cama UTI: Crea el objeto Cama y lo actualiza en la base de datos, cambiando su campo a “ocupado”.
+
 5- Desocupar Cama UTI: Crea el objeto Cama y lo actualiza en la base de datos, cambiando su campo a “desocupado”.
+
 6- Desconectar el servidor: Se encarga de finalizar la ejecución del programa servidor.
+
 7- Revisar log: Se encarga de mostrar el registro de las operaciones realizadas por el servidor en memoria principal, imprimiendo los resultados en el programa servidor.
+
 
 ### Documentación TP-Sockets
 https://docs.google.com/document/d/1PNgfD7ImLgAtXumwQ-XTzcml3ikComTWwn59j0DMva4/edit
