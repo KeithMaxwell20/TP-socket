@@ -74,7 +74,7 @@ El servidor retorna un String en formato JSON con la siguiente estructura:
 * estado, donde:
     "0" corresponde a una transacción exitosa.
     "-1" transacción errónea.
-* mensaje
+* mensaje:
     Palabra “ok” si no existe error.
     El detalle del error si existe o “Error”.
 * tipo_operacion:
@@ -107,7 +107,7 @@ Sin embargo, algunas opciones colocan los campos de nombre del hospital, número
 
 ### Cómo compilar y ejecutar el/los clientes.
 
-Una vez dentro del IDE compilamos y runeamos el UDPServer.java del proyecto
+Una vez dentro del IDE compilamos y runeamos el UDPServer.java del proyecto.
 
 ![imagen](https://user-images.githubusercontent.com/88010175/131272624-19b2459f-9593-4d74-b080-c9f6118d34a0.png)
 
