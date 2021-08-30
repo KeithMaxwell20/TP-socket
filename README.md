@@ -31,9 +31,11 @@ Para poblar la base de datos con valores iniciales, siga esa estructura para una
 
 ### Compilar y ejecutar 
 Copiar el repositorio
+
 ![imagen](https://user-images.githubusercontent.com/88010175/131270398-8bc40fe3-d7e6-4b5f-bb50-410c5d8bd528.png)
 
-  `` $ git clone https://github.com/KeithMaxwell20/TP-socket.git ``
+Ejecutar el comando
+`` $ git clone https://github.com/KeithMaxwell20/TP-socket.git ``
 
 El servidor se encuentra en src\main\java\py\una\server\udp, si está ejecutando en NetBeans tiene que darle a Run.
 Si se encuentra en VSC tiene que darle a Run Java (aparece en con Code Run).
@@ -49,3 +51,4 @@ Hecho esto, podemos ejecutar la aplicación del cliente llamada “UDPClient” 
 * Desocupar Cama UTI
 * Desconectar el servidor
 * Revisar log
+
