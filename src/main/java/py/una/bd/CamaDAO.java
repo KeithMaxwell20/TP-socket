@@ -90,9 +90,7 @@ public class CamaDAO {
 	
     public int insertar(Cama p) throws SQLException {
 
-        
-        
-        
+
         String SQL = "INSERT INTO camas(hospital, cama, estado) "
                 + "VALUES(?,?,?)";
  
@@ -101,7 +99,8 @@ public class CamaDAO {
         
         try 
         {
-        	conn = Bd.connect();
+            conn = Bd.connect();
+            
         	PreparedStatement pstmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, p.getHospital());
             pstmt.setString(2, p.getCama());
