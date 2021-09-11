@@ -55,7 +55,7 @@ class UDPClient {
                 DatagramPacket receivePacket
                         = new DatagramPacket(receiveData, receiveData.length);
 
-                System.out.println("Esperamos si viene la respuesta.");
+                System.out.println("Esperamos si viene la respuesta del servidor.");
 
                 //Vamos a hacer una llamada BLOQUEANTE entonces establecemos un timeout maximo de espera
                 clientSocket.setSoTimeout(10000);
