@@ -15,13 +15,13 @@ public class TestCamaDAO {
 		CamaDAO pdao = new CamaDAO();
 		
 		
-		pdao.insertar(new Cama("IPS","1", "Desocupado") );
-		pdao.insertar(new Cama("IPS","2", "Ocupado") );
-		pdao.insertar(new Cama("IPS","3", "Desocupado") );
-		pdao.insertar(new Cama("IPS","4", "Desocupado") );
+		pdao.insertar(new Cama("IPS","Cama-1", "Desocupado") );
+		pdao.insertar(new Cama("IPS","Cama-2", "Ocupado") );
+		pdao.insertar(new Cama("IPS","Cama-3", "Desocupado") );
+		pdao.insertar(new Cama("IPS","Cama-4", "Desocupado") );
 		
 		
-		pdao.actualizarEstado(new Cama("IPS","4", "Ocupado") );
+		pdao.actualizarEstado(new Cama("IPS","Cama-4", "Ocupado") );
 		
 		//pdao.borrar("IPS","4");
 		
