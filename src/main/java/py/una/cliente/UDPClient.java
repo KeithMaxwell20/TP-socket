@@ -54,7 +54,10 @@ class UDPClient {
 
                 DatagramPacket receivePacket
                         = new DatagramPacket(receiveData, receiveData.length);
-
+                
+               // Comentario de texto estático de Alejandro Adorno para el 1er parcial
+                System.out.println("Hola Mundo!, estamos en el primer parcial");
+                
                 System.out.println("Esperamos si viene la respuesta.");
 
                 //Vamos a hacer una llamada BLOQUEANTE entonces establecemos un timeout maximo de espera
