@@ -101,7 +101,7 @@ public class UDPServer {
 				// Clase JSONParser para convertir cadena a formato JSON
 				JSONParser parser = new JSONParser();
 
-				// Creamos la coneccion a la base de datos
+				// Creamos la conexión a la base de datos
 				CamaDAO camaDAO = new CamaDAO();
 				// Creamos el json para la respuesta al cliente
 				JSONObject respuesta = new JSONObject();
@@ -447,3 +447,6 @@ public class UDPServer {
 
 }
 
+
+
+// Línea de texto añadida por Alejandro Adorno para el parcial de Sistemas Distribuidos
