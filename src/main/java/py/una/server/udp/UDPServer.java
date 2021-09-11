@@ -36,6 +36,8 @@ public class UDPServer {
 			// Creamos el socket Servidor de Datagramas UDP
 			DatagramSocket serverSocket = new DatagramSocket(puertoServidor);
 			System.out.println("Servidor Sistemas Distribuidos - UDP ");
+                        
+                        System.out.println("Trabajo practico SD");
 
 			// Creamos los buffer de datos a enviar y recibir
 			byte[] receiveData = new byte[1024];
